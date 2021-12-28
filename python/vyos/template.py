@@ -386,6 +386,22 @@ def get_ipv6(interface):
     from vyos.ifconfig import Interface
     return Interface(interface).get_addr_v6()
 
+@register_filter('get_ipv6_link_local')
+def get_ipv6_link_local():
+    """
+    Get list of all IPv6 linklocal addresses
+    Example:
+    ['fe80::200:ff:fe00:0%lo', 'fe80::5054:ff:fe48:a0c6%eth0']
+    """
+    import netifaces
+    ips = []
+    for iface in netifaces.interfaces():
+        for link in netifaces.ifaddresses(iface).get(netifaces.AF_INET6, []):
+            addr =  link.get('addr', None)
+            if addr and '%' in addr:
+                ips.append(addr)
+    return(ips)
+
 @register_filter('get_ip')
 def get_ip(interface):
     """ Get interface IP addresses"""
