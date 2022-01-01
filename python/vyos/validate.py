@@ -80,6 +80,7 @@ def _is_intf_addr_assigned(intf, address, netmask=None):
         # ip can have the interface name in the 'addr' field, we need to remove it
         # {'addr': 'fe80::a00:27ff:fec5:f821%eth2', 'netmask': 'ffff:ffff:ffff:ffff::'}
         ip_addr = ip['addr'].split('%')[0]
+        address = address.split('%')[0]
 
         if not _are_same_ip(address, ip_addr):
             continue
